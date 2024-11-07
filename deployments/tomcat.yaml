@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tomcat
+  template:
+    metadata:
+      labels:
+        app: tomcat
+    spec:
+      containers:
+      - name: tomcat
+        image: tomcat:9-jre11
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: sample-app
+          mountPath: /usr/local/tomcat/webapps
+      initContainers:
+      - name: download-war
+        image: busybox
+        command: ['wget', '-O', '/sample/sample.war', 'https://tomcat.apache.org/tomcat-11.0-doc/appdev/sample/sample.war']
+        volumeMounts:
+        - name: sample-app
+          mountPath: /sample
+      volumes:
+      - name: sample-app
+        emptyDir: {}

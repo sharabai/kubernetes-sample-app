@@ -4,17 +4,17 @@ metadata:
   name: nginx-config
 data:
   nginx.conf: |
-      server {
-        listen 80;
+    server {
+      listen 80;
 
-        root /usr/share/nginx/html;
-        index index.html index.htm;
-     
-        location / {
-            try_files $uri $uri/ =404;
-        }
+      root /usr/share/nginx/html;
+      index index.html index.htm;
 
-        location /sample {
-          proxy_pass http://tomcat-service:8080/sample/;
-        }
+      location / {
+          try_files $uri $uri/ =404;
       }
+
+      location /sample {
+        proxy_pass http://tomcat-service:8080/sample/;
+      }
+    }
